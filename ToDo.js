@@ -1,11 +1,23 @@
-const taskArray = [];
+// window.onload = () => {
+//   if (localStorage.getItem("taskList")) {
+//     const nodeList = JSON.parse(localStorage["taskList"]);
+//     let list = document.getElementById("list");
+//     [...nodeList].map((element) => list.appendChild(element));
+//   }
+// };
 
+const getAllNodes = () => {
+  const list = document.getElementById("list");
+  const nodeList = list.querySelectorAll("li");
+  return [...nodeList];
+};
 const addTask = () => {
   const taskName = document.getElementById("taskId");
-  let list = document.getElementById("list");
+
   const ele = getElement(taskName.value);
-  taskArray.push(ele);
   list.appendChild(ele);
+  // let childNodes = list.childNodes;
+  // localStorage["taskList"] = JSON.stringify([...childNodes]);
   taskName.value = null;
 };
 
@@ -25,22 +37,27 @@ const getElement = (taskName) => {
 };
 
 const deleteTask = (_event, ele) => {
-  const index = taskArray.findIndex((element) => element === ele);
-  taskArray.splice(index, 1);
-  let list = document.getElementById("list");
-  taskArray.map((element) => list.appendChild(element));
+  const index = getAllNodes().findIndex((element) => element === ele);
+
+  if (index !== -1) {
+    let list = document.getElementById("list");
+    const nodeList = getAllNodes();
+    nodeList.splice(index, 1);
+    list.innerHTML = "";
+    nodeList.map((element) => list.appendChild(element));
+  }
 };
 
 const completeTask = (event, ele) => {
   const { checked } = event.target;
-  const index = taskArray.findIndex((element) => element === ele);
+  const index = getAllNodes().findIndex((element) => element === ele);
   if (checked === true) {
     ele.style.textDecoration = "line-through";
-    taskArray[index] = ele;
+    getAllNodes[index] = ele;
   } else {
     ele.style.textDecoration = "none";
-    taskArray[index] = ele;
+    getAllNodes[index] = ele;
   }
   let list = document.getElementById("list");
-  taskArray.map((element) => list.appendChild(element));
+  getAllNodes().map((element) => list.appendChild(element));
 };
